@@ -11,7 +11,7 @@ public record UserCreateRequest(
         @NotBlank
         String password,
         @NotBlank
-        @Size(max = 30)
+        @Size(max = 15)
         String nickname
 ) {
 }

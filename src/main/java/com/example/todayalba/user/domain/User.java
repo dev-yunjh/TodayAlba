@@ -33,7 +33,7 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Column(name = "nickname", nullable = false, unique = true, length = 30)
+    @Column(name = "nickname", nullable = false, unique = true, length = 15)
     private String nickname;
 
     @Enumerated(EnumType.STRING)

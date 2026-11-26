@@ -2,7 +2,7 @@ CREATE TABLE users (
                        id                BINARY(16)   NOT NULL PRIMARY KEY,
                        email_hash        VARCHAR(255) NOT NULL UNIQUE,
                        password_hash     VARCHAR(255) NOT NULL,
-                       nickname          VARCHAR(30)  NOT NULL UNIQUE,
+                       nickname          VARCHAR(15)  NOT NULL UNIQUE,
                        role              VARCHAR(20)  NOT NULL DEFAULT 'USER',
                        membership_type   VARCHAR(20)  NOT NULL DEFAULT 'FREE',
                        status            VARCHAR(20)  NOT NULL DEFAULT 'ACTIVE',
