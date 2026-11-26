@@ -2,38 +2,38 @@ package com.example.todayalba.user.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "users")
-@RequiredArgsConstructor
 public class User {
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(columnDefinition = "BINARY(16)", nullable = false, updatable = false)
     private UUID id;
 
     @Column(name = "email_hash", nullable = false, unique = true)
-    @NonNull
     private String emailHash;
 
     @Column(name = "password_hash", nullable = false)
-    @NonNull
     private String passwordHash;
 
     @Column(name = "nickname", nullable = false, unique = true, length = 30)
-    @NonNull
     private String nickname;
 
     @Enumerated(EnumType.STRING)
@@ -57,9 +57,13 @@ public class User {
     @Column(name = "last_login_at")
     private LocalDateTime lastLoginAt;
 
+    @CreatedDate
+    @Getter
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @LastModifiedDate
+    @Getter
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
@@ -69,66 +73,9 @@ public class User {
     protected User() {
     }
 
-    @PrePersist
-    private void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = createdAt;
-    }
-
-    @PreUpdate
-    private void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getEmailHash() {
-        return emailHash;
-    }
-
-    public String getPasswordHash() {
-        return passwordHash;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public MembershipType getMembershipType() {
-        return membershipType;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public LocalDateTime getSuspendedUntil() {
-        return suspendedUntil;
-    }
-
-    public LocalDateTime getLastLoginAt() {
-        return lastLoginAt;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public LocalDateTime getDeletedAt() {
-        return deletedAt;
+    public User(@NonNull String emailHash, @NonNull String passwordHash, @NonNull String nickname) {
+        this.emailHash = emailHash;
+        this.passwordHash = passwordHash;
+        this.nickname = nickname;
     }
 }
