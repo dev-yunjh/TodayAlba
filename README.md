@@ -2,6 +2,29 @@
 
 ---
 
+## 목차
+
+| 번호 | 항목 |
+|---|---|
+| 1 | [Description](#1-description) |
+| 2 | [Project Overview](#2-project-overview) |
+| 3 | [Features](#3-features) |
+| 4 | [Tech Stack](#4-tech-stack) |
+| 5 | [Technical Decisions](#5-technical-decisions) |
+| 5.1 | [도메인 중심 패키지 구조](#51-도메인-중심-패키지-구조) |
+| 5.2 | [SQL 기반 데이터베이스 스키마 설계](#52-sql-기반-데이터베이스-스키마-설계) |
+| 5.3 | [서버 DB와 로컬 DB의 역할 분리](#53-서버-db와-로컬-db의-역할-분리) |
+| 6 | [System Architecture](#6-system-architecture) |
+| 7 | [Database Design](#7-database-design) |
+| 7.1 | [ERD](#71-erd) |
+| 7.2 | [Table Specification](#72-table-specification) |
+| 7.3 | [Schema Migration](#73-schema-migration) |
+| 8 | [API Documentation](#8-api-documentation) |
+| 9 | [Troubleshooting](#9-troubleshooting) |
+| 10 | [Roadmap](#10-roadmap) |
+
+---
+
 ### 1. Description
 
 
@@ -53,9 +76,20 @@
 
 ---
 
----
-
 ### 5. Technical Decisions
+
+#### 5.1 도메인 중심 패키지 구조
+
+#### 5.2 SQL 기반 데이터베이스 스키마 설계
+
+JPA의 자동 DDL 생성 기능에 의존하지 않고, 서비스 요구사항을 기반으로 SQL을 직접 작성하여 데이터베이스 스키마를 설계합니다.
+
+- 데이터 특성을 고려한 자료형 및 컬럼 정의
+- PK, FK, UNIQUE, CHECK 제약조건을 통한 데이터 무결성 보장
+- 조회 패턴을 고려한 인덱스 설계
+- Flyway를 활용한 스키마 버전 및 변경 이력 관리
+
+#### 5.3 서버 DB와 로컬 DB의 역할 분리
 
 ---
 
@@ -63,7 +97,23 @@
 
 ---
 
-### 7. ERD
+### 7. Database Design
+
+#### 7.1 ERD
+
+#### 7.2 Table Specification
+
+| 테이블 | 설명 |
+|---|---|
+| users | 회원 정보 및 계정 상태 관리 |
+
+#### 7.3 Schema Migration
+
+| Version | Description |
+|---|---|
+| V1 | 회원 도메인 초기 스키마 생성 |
+
+[SQL Migration Files](./src/main/resources/db/migration)
 
 ---
 
