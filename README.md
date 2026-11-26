@@ -127,8 +127,8 @@ JPA의 자동 DDL 생성 기능에 의존하지 않고, 서비스 요구사항�
 
 ### 10. Roadmap
 
-- [ ] Phase 1. 아르바이트 후기 및 커뮤니티 MVP 개발
-- [ ] Phase 2. 근무 및 급여 관리 MVP 개발
+- [ ] Phase 1. 근무 및 급여 관리 MVP 개발
+- [ ] Phase 2. 아르바이트 후기 및 커뮤니티 MVP 개발
 - [ ] Phase 3. Android 및 iOS 서비스 출시
 - [ ] Phase 4. 사용자 피드백 기반 서비스 개선
 - [ ] Phase 5. 서비스 확장 및 수익화
