@@ -13,6 +13,9 @@ import java.util.Locale;
 import java.util.UUID;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
@@ -22,15 +25,11 @@ import org.springframework.validation.annotation.Validated;
 
 @Service
 @Validated
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final SecretKeySpec emailHashKey;
     private final PasswordEncoder passwordEncoder = Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
-
-    public UserService(UserRepository userRepository, @Value("${app.email-hash-key}") String encodedKey) {
-        this.userRepository = userRepository;
-        this.emailHashKey = new SecretKeySpec(Base64.getDecoder().decode(encodedKey), "HmacSHA256");
-    }
 
     @Transactional
     public UUID register(@Valid @NotNull UserCreateRequest request) {
