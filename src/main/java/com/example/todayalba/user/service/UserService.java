@@ -7,18 +7,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
-import java.util.Base64;
 import java.util.HexFormat;
 import java.util.Locale;
-import java.util.UUID;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -29,24 +24,25 @@ import org.springframework.validation.annotation.Validated;
 public class UserService {
     private final UserRepository userRepository;
     private final SecretKeySpec emailHashKey;
-    private final PasswordEncoder passwordEncoder = Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public UUID register(@Valid @NotNull UserCreateRequest request) {
+    public void register(@Valid @NotNull UserCreateRequest request) {
         String emailHash = hashEmail(request.email());
         String passwordHash = passwordEncoder.encode(request.password());
         User user = new User(emailHash, passwordHash, request.nickname());
-        return userRepository.save(user).getId();
+        userRepository.save(user);
     }
 
     private String hashEmail(String email) {
         try {
             Mac mac = Mac.getInstance(emailHashKey.getAlgorithm());
             mac.init(emailHashKey);
-            byte[] normalizedEmail = email.toLowerCase(Locale.ROOT).getBytes(StandardCharsets.UTF_8);
-            return HexFormat.of().formatHex(mac.doFinal(normalizedEmail));
+            String normalizedEmail = email.toLowerCase(Locale.ROOT);
+            return HexFormat.of().formatHex(mac.doFinal(normalizedEmail.getBytes(StandardCharsets.UTF_8)));
         } catch (GeneralSecurityException ex) {
             throw new IllegalStateException("Cannot compute email hash", ex);
         }
     }
+
 }
