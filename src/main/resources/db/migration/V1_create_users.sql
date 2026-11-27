@@ -1,6 +1,7 @@
 CREATE TABLE users (
                        id                BINARY(16)   NOT NULL PRIMARY KEY,
                        email_hash        VARCHAR(255) NOT NULL UNIQUE,
+                       email_hash_key_version SMALLINT NOT NULL,
                        password_hash     VARCHAR(255) NOT NULL,
                        nickname          VARCHAR(15)  NOT NULL UNIQUE,
                        role              VARCHAR(20)  NOT NULL DEFAULT 'USER',

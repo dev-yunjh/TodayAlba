@@ -30,6 +30,9 @@ public class User {
     @Column(name = "email_hash", nullable = false, unique = true)
     private String emailHash;
 
+    @Column(name = "email_hash_key_version", nullable = false)
+    private short emailHashKeyVersion = 1;
+
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
