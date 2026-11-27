@@ -10,7 +10,7 @@ public record UserCreateRequest(
         String signupToken,
 
         @NotBlank
-        @Size(min = 8, max = 64, message = "비밀번호는 6~64자로 입력해 주세요.")
+        @Size(min = 8, max = 64, message = "비밀번호는 8~64자로 입력해 주세요.")
         @Pattern(
                 regexp = "(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*()=_+\\-])[A-Za-z0-9!@#$%^&*()=_+\\-]+",
                 message = "비밀번호는 영문, 숫자, 특수문자(!@#$%^&*()-=_+)를 각각 하나 이상 포함해 주세요."
