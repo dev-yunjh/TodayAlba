@@ -23,7 +23,7 @@ public class VerificationMailSender {
         message.setFrom(from);
         message.setTo(email);
         message.setSubject("[TodayAlba] 회원가입 인증 코드");
-        message.setText("인증 코드: " + code + "\n5분 안에 입력해 주세요.");
+        message.setText("인증 코드: " + code + "\n인증번호는 발급 후 2분 30초 동안 유효합니다.");
 
         mailSender.send(message);
     }

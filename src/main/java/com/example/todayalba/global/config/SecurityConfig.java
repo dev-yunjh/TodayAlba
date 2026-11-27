@@ -5,6 +5,9 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +17,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        String[] signupPaths = {"/api/email-verifications", "/api/email-verifications/confirm", "/api/users"};
+        return http
+                .csrf(csrf -> csrf.ignoringRequestMatchers(signupPaths))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, signupPaths).permitAll()
+                        .anyRequest().authenticated())
+                .build();
+    }
 
     @Bean
     public SecretKeySpec emailHashKey(@Value("${app.email-hash-key}") String encodedKey) {
