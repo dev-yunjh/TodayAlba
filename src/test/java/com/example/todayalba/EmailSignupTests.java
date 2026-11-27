@@ -40,7 +40,7 @@ class EmailSignupTests {
         String token = verifications.verifyCode(email, sent.getValue());
         assertEquals("VERIFICATION_CODE_UNAVAILABLE", assertThrows(VerificationCodeException.class,
                 () -> verifications.verifyCode(email, sent.getValue())).getCode());
-        var request = new UserCreateRequest(token, "password", "tester");
+        var request = new UserCreateRequest(token, "TestPass1!", "tester");
         users.register(request);
         assertEquals(1L, repository.count());
         assertThrows(ResponseStatusException.class, () -> users.register(request));
