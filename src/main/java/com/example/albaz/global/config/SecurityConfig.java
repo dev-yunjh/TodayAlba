@@ -20,10 +20,11 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String[] signupPaths = {"/api/email-verifications", "/api/email-verifications/confirm", "/api/users"};
+        String[] publicAuthPaths = {"/api/email-verifications", "/api/email-verifications/confirm",
+                "/api/users", "/api/login", "/api/logout"};
         return http
-                .csrf(csrf -> csrf.ignoringRequestMatchers(signupPaths))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, signupPaths).permitAll()
+                .csrf(csrf -> csrf.ignoringRequestMatchers(publicAuthPaths))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, publicAuthPaths).permitAll()
                         .anyRequest().authenticated())
                 .build();
     }

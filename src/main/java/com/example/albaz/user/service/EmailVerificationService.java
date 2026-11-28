@@ -32,7 +32,7 @@ public class EmailVerificationService {
     @Transactional
     public void requestCode(String email) {
         String address = email.toLowerCase(Locale.ROOT);
-        String emailHash = hmac(address);
+        String emailHash = hashEmail(address);
 
         EmailVerification verification = verifications.findByEmailHash(emailHash)
                 .orElseGet(() -> new EmailVerification(emailHash));
@@ -53,7 +53,7 @@ public class EmailVerificationService {
     @Transactional(noRollbackFor = VerificationCodeException.class)
     public String verifyCode(String email, String code) {
 
-        String emailHash = hmac(email.toLowerCase(Locale.ROOT));
+        String emailHash = hashEmail(email);
 
         EmailVerification verification = verifications.findByEmailHash(emailHash)
                 .orElseThrow(VerificationCodeException::unavailable);
@@ -92,6 +92,10 @@ public class EmailVerificationService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid signup token"));
         verifications.delete(verification);
         return verification.getEmailHash();
+    }
+
+    String hashEmail(String email) {
+        return hmac(email.toLowerCase(Locale.ROOT));
     }
 
     private String codeHash(String emailHash, String code) {

@@ -37,6 +37,7 @@ public class User {
     @Column(name = "email_hash_key_version", nullable = false)
     private short emailHashKeyVersion = 1;
 
+    @Getter
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 

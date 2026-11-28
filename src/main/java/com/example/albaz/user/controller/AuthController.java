@@ -5,6 +5,9 @@ import com.example.albaz.user.dto.EmailVerificationSendRequest;
 import com.example.albaz.user.dto.EmailVerificationConfirmRequest;
 import com.example.albaz.user.dto.EmailVerificationConfirmResponse;
 import com.example.albaz.user.dto.UserCreateRequest;
+import com.example.albaz.user.dto.LoginRequest;
+import com.example.albaz.user.dto.LoginResponse;
+import com.example.albaz.user.dto.LogoutRequest;
 import com.example.albaz.user.service.EmailVerificationService;
 import com.example.albaz.user.service.UserService;
 import jakarta.validation.Valid;
@@ -18,6 +21,23 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final EmailVerificationService verifications;
     private final UserService userService;
+
+    @PostMapping("/login")
+    public SuccessResponse<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
+        LoginResponse tokens = userService.login(request);
+
+        return SuccessResponse.<LoginResponse>builder()
+                .status(HttpStatus.OK.value())
+                .message("로그인 성공")
+                .data(tokens)
+                .build();
+    }
+
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void logout(@Valid @RequestBody LogoutRequest request) {
+        userService.logout(request.refreshToken());
+    }
 
     // 회원가입
     @PostMapping("/users")
